@@ -1,0 +1,51 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --color-primary: #db2777;
+  --color-secondary: #eab308;
+  --color-spa-rose: #f9a8d4;
+  --color-spa-gold: #fbbf24;
+}
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+  }
+  body {
+    @apply font-sans text-gray-800;
+  }
+  h1,
+  h2,
+  h3 {
+    @apply font-serif;
+  }
+}
+
+@layer components {
+  /* Nút chính - màu hồng */
+  .btn-primary {
+    @apply bg-primary-600 hover:bg-primary-700 text-white font-semibold py-3 px-6 rounded-full transition-all duration-300 shadow-md hover:shadow-lg;
+  }
+
+  /* Nút phụ - màu vàng */
+  .btn-secondary {
+    @apply bg-secondary-500 hover:bg-secondary-600 text-white font-semibold py-3 px-6 rounded-full transition-all duration-300;
+  }
+
+  /* Tiêu đề section */
+  .section-title {
+    @apply text-3xl md:text-4xl font-serif font-bold text-gray-800 text-center mb-4;
+  }
+
+  /* Mô tả section */
+  .section-subtitle {
+    @apply text-gray-500 text-center mb-12 max-w-2xl mx-auto;
+  }
+
+  /* Card spa */
+  .card-spa {
+    @apply bg-white rounded-2xl shadow-md hover:shadow-xl transition-all duration-300 overflow-hidden;
+  }
+}
