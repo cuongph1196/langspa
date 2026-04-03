@@ -1,6 +1,6 @@
 import { Injectable, NotFoundException } from '@nestjs/common'
 import { InjectRepository } from '@nestjs/typeorm'
-import { Repository } from 'typeorm'
+import { Repository, FindOptionsWhere } from 'typeorm'
 import { Booking } from './entities/booking.entity'
 
 // DTO tạo đặt lịch
@@ -47,10 +47,53 @@ export class BookingsService {
     })
   }
 
-  // Lấy tất cả đặt lịch (admin)
+  // Lấy tất cả đặt lịch (admin, có pagination + filter)
+  async findAllAdmin(options: {
+    page?: number
+    limit?: number
+    status?: string
+    date?: string
+    branchId?: string
+    userId?: string
+  }) {
+    const { page = 1, limit = 15, status, date, branchId, userId } = options
+    const skip = (page - 1) * limit
+
+    const where: FindOptionsWhere<Booking> = {}
+    if (status) where.status = status
+    if (date) where.bookingDate = date
+    if (branchId) where.branchId = branchId
+    if (userId) where.user = { id: userId }
+
+    const [items, total] = await this.bookingsRepository.findAndCount({
+      where,
+      skip,
+      take: limit,
+      order: { createdAt: 'DESC' },
+    })
+
+    return { items, total, page, totalPages: Math.ceil(total / limit) }
+  }
+
+  // Lấy tất cả đặt lịch (admin, không phân trang - legacy)
   async findAll(): Promise<Booking[]> {
     return this.bookingsRepository.find({
       order: { createdAt: 'DESC' },
+    })
+  }
+
+  // Tìm lịch hẹn theo ID
+  async findById(id: string): Promise<Booking> {
+    const booking = await this.bookingsRepository.findOne({ where: { id } })
+    if (!booking) throw new NotFoundException('Không tìm thấy lịch hẹn')
+    return booking
+  }
+
+  // Lấy lịch hẹn theo ngày (calendar view)
+  async getCalendar(date: string): Promise<Booking[]> {
+    return this.bookingsRepository.find({
+      where: { bookingDate: date },
+      order: { timeSlot: 'ASC' },
     })
   }
 

@@ -1,8 +1,9 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import Link from 'next/link'
-import { Menu, X, Flower2 } from 'lucide-react'
+import { useRouter } from 'next/navigation'
+import { Menu, X, Flower2, ChevronDown, LogOut, Mail, Shield, LayoutDashboard } from 'lucide-react'
 
 // Danh sách menu điều hướng
 const navLinks = [
@@ -15,8 +16,51 @@ const navLinks = [
   { href: '/contact', label: 'Liên hệ' },
 ]
 
+const roleLabels: Record<string, string> = {
+  MANAGER: 'Quản lý',
+  TECHNICIAN: 'Kỹ thuật viên',
+  RECEPTIONIST: 'Lễ tân',
+  CASHIER: 'Thu ngân',
+  CUSTOMER: 'Khách hàng',
+}
+
+const adminRoles = ['MANAGER', 'TECHNICIAN', 'RECEPTIONIST', 'CASHIER']
+
+function decodeToken(token: string): { fullName?: string; email?: string; role?: string } {
+  try {
+    const payload = JSON.parse(atob(token.split('.')[1]))
+    return { fullName: payload.fullName, email: payload.email, role: payload.role }
+  } catch {
+    return {}
+  }
+}
+
 export default function Header() {
+  const router = useRouter()
   const [isMenuOpen, setIsMenuOpen] = useState(false)
+  const [profileOpen, setProfileOpen] = useState(false)
+  const [profile, setProfile] = useState<{ fullName?: string; email?: string; role?: string } | null>(null)
+  const profileRef = useRef<HTMLDivElement>(null)
+
+  useEffect(() => {
+    const token = localStorage.getItem('access_token')
+    if (token) {
+      setProfile(decodeToken(token))
+    }
+  }, [])
+
+  const initials = profile?.fullName
+    ? profile.fullName.split(' ').slice(-2).map((w) => w[0]).join('').toUpperCase()
+    : ''
+
+  function handleLogout() {
+    localStorage.removeItem('access_token')
+    setProfile(null)
+    setProfileOpen(false)
+    router.replace('/')
+  }
+
+  const isLoggedIn = !!profile
 
   return (
     <header className="sticky top-0 z-50 bg-white/95 backdrop-blur-md shadow-sm border-b border-pink-100">
@@ -45,16 +89,91 @@ export default function Header() {
 
           {/* Nút hành động */}
           <div className="hidden md:flex items-center gap-3">
-            <Link
-              href="/login"
-              className="text-gray-600 hover:text-primary-600 font-medium text-sm transition-colors"
-            >
-              Đăng nhập
-            </Link>
-            <Link
-              href="/booking"
-              className="btn-primary text-sm py-2 px-5"
-            >
+            {isLoggedIn ? (
+              <div className="relative" ref={profileRef}>
+                <button
+                  onClick={() => setProfileOpen((o) => !o)}
+                  className="flex items-center gap-2.5 pl-2 pr-3 py-1.5 rounded-xl hover:bg-pink-50 transition-colors"
+                >
+                  <div className="w-8 h-8 bg-primary-100 rounded-full flex items-center justify-center shrink-0">
+                    <span className="text-xs font-bold text-primary-700">{initials}</span>
+                  </div>
+                  <div className="text-left">
+                    <p className="text-sm font-semibold text-gray-800 leading-tight">
+                      {profile?.fullName}
+                    </p>
+                    {profile?.role && (
+                      <p className="text-xs text-gray-400 leading-tight">
+                        {roleLabels[profile.role] ?? profile.role}
+                      </p>
+                    )}
+                  </div>
+                  <ChevronDown className="w-3.5 h-3.5 text-gray-400 shrink-0" />
+                </button>
+
+                {profileOpen && (
+                  <>
+                    <div className="fixed inset-0 z-10" onClick={() => setProfileOpen(false)} />
+                    <div className="absolute right-0 top-full mt-1.5 w-64 bg-white rounded-xl shadow-lg border border-gray-100 z-20 overflow-hidden">
+                      {/* Profile info */}
+                      <div className="px-4 py-4 bg-gray-50 border-b border-gray-100">
+                        <div className="flex items-center gap-3">
+                          <div className="w-10 h-10 bg-primary-100 rounded-full flex items-center justify-center shrink-0">
+                            <span className="text-sm font-bold text-primary-700">{initials}</span>
+                          </div>
+                          <div className="min-w-0">
+                            <p className="text-sm font-semibold text-gray-900 truncate">
+                              {profile?.fullName}
+                            </p>
+                            {profile?.email && (
+                              <p className="text-xs text-gray-400 truncate flex items-center gap-1 mt-0.5">
+                                <Mail className="w-3 h-3 shrink-0" />
+                                {profile.email}
+                              </p>
+                            )}
+                            {profile?.role && (
+                              <span className="inline-flex items-center gap-1 mt-1.5 text-xs font-medium text-primary-700 bg-primary-50 px-2 py-0.5 rounded-full">
+                                <Shield className="w-3 h-3" />
+                                {roleLabels[profile.role] ?? profile.role}
+                              </span>
+                            )}
+                          </div>
+                        </div>
+                      </div>
+
+                      {/* Actions */}
+                      <div className="py-1">
+                        {profile?.role && adminRoles.includes(profile.role) && (
+                          <Link
+                            href="/admin"
+                            onClick={() => setProfileOpen(false)}
+                            className="flex items-center gap-2 w-full px-4 py-2.5 text-sm text-gray-700 hover:bg-gray-50 transition-colors"
+                          >
+                            <LayoutDashboard className="w-4 h-4 text-primary-500" />
+                            Trang quản trị
+                          </Link>
+                        )}
+                        <button
+                          onClick={handleLogout}
+                          className="flex items-center gap-2 w-full px-4 py-2.5 text-sm text-red-600 hover:bg-red-50 transition-colors"
+                        >
+                          <LogOut className="w-4 h-4" />
+                          Đăng xuất
+                        </button>
+                      </div>
+                    </div>
+                  </>
+                )}
+              </div>
+            ) : (
+              <Link
+                href="/login"
+                className="text-gray-600 hover:text-primary-600 font-medium text-sm transition-colors"
+              >
+                Đăng nhập
+              </Link>
+            )}
+            <Link href="/booking" className="btn-primary text-sm py-2 px-5">
               Đặt lịch
             </Link>
           </div>

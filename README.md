@@ -29,7 +29,7 @@ docker-compose up -d
 ```
 
 Lệnh này sẽ khởi động:
-- PostgreSQL tại cổng **5432** (database: `langspa`, user: `postgres`, password: `postgres`)
+- PostgreSQL tại cổng **5432** (database: `langspa`, user: `admin`, password: `Lang202604@`)
 - Redis tại cổng **6379**
 
 ### Bước 3: Cài đặt dependencies

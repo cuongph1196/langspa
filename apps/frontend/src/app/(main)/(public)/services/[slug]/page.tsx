@@ -25,7 +25,7 @@ const serviceData: Record<string, Service & { fullDescription: string }> = {
     imageUrl: 'https://images.unsplash.com/photo-1570172619644-dfd03ed5d881?w=800&q=80',
     isActive: true,
     createdAt: '2024-01-01',
-    category: { id: '1', name: 'Chăm sóc da', slug: 'cham-soc-da', icon: '✨' },
+    category: 'Chăm sóc da',
   },
 }
 
@@ -41,7 +41,7 @@ const relatedServices: Service[] = [
     imageUrl: 'https://images.unsplash.com/photo-1570172619644-dfd03ed5d881?w=400&q=80',
     isActive: true,
     createdAt: '2024-01-01',
-    category: { id: '1', name: 'Chăm sóc da', slug: 'cham-soc-da', icon: '✨' },
+    category: 'Chăm sóc da',
   },
 ]
 
@@ -83,7 +83,7 @@ export default function ServiceDetailPage({ params }: ServiceDetailPageProps) {
             <div className="bg-white rounded-2xl p-6 shadow-sm mb-6">
               <div className="flex items-center gap-2 mb-3">
                 <span className="text-xs bg-primary-100 text-primary-600 px-3 py-1 rounded-full font-medium">
-                  {service.category.name}
+                  {service.category}
                 </span>
               </div>
               <h1 className="font-serif text-3xl font-bold text-gray-800 mb-4">

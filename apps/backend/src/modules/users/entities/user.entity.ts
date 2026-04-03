@@ -6,6 +6,14 @@ import {
   UpdateDateColumn,
 } from 'typeorm'
 
+export enum UserRole {
+  CUSTOMER = 'CUSTOMER',
+  MANAGER = 'MANAGER',
+  TECHNICIAN = 'TECHNICIAN',
+  RECEPTIONIST = 'RECEPTIONIST',
+  CASHIER = 'CASHIER',
+}
+
 @Entity('users')
 export class User {
   @PrimaryGeneratedColumn('uuid')
@@ -25,13 +33,22 @@ export class User {
 
   @Column({
     type: 'enum',
-    enum: ['STANDARD', 'SILVER', 'GOLD', 'VIP'],
-    default: 'STANDARD',
+    enum: UserRole,
+    default: UserRole.CUSTOMER,
   })
-  membershipLevel: string
+  role: UserRole
 
-  @Column({ default: 0 })
-  points: number
+  @Column({ nullable: true })
+  branchId: string
+
+  @Column({ type: 'text', array: true, nullable: true, default: '{}' })
+  specialties: string[]
+
+  @Column({ nullable: true })
+  avatarUrl: string
+
+  @Column({ nullable: true })
+  position: string
 
   @Column({ default: true })
   isActive: boolean

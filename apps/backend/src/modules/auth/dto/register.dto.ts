@@ -12,7 +12,7 @@ export class RegisterDto {
   @MinLength(6)
   password: string
 
-  @ApiProperty({ example: 'Nguyễn Thị Hoa' })
+  @ApiProperty({ example: 'Nguyễn Văn A' })
   @IsString()
   fullName: string
 

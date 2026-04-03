@@ -1,17 +1,19 @@
-import { Controller, Post, Body, HttpCode, HttpStatus } from '@nestjs/common'
+import { Controller, Post, Body, HttpCode, HttpStatus, UseGuards } from '@nestjs/common'
 import { ApiTags, ApiOperation } from '@nestjs/swagger'
 import { AuthService } from './auth.service'
 import { LoginDto } from './dto/login.dto'
 import { RegisterDto } from './dto/register.dto'
+import { JwtAuthGuard } from '../../common/guards/jwt-auth.guard'
 
 @ApiTags('Auth')
 @Controller('auth')
 export class AuthController {
   constructor(private readonly authService: AuthService) {}
 
-  // POST /api/auth/register - Đăng ký tài khoản
+  // POST /api/auth/register - Tạo tài khoản (yêu cầu đăng nhập)
   @Post('register')
-  @ApiOperation({ summary: 'Đăng ký tài khoản mới' })
+  @UseGuards(JwtAuthGuard)
+  @ApiOperation({ summary: 'Tạo tài khoản mới (yêu cầu xác thực)' })
   async register(@Body() registerDto: RegisterDto) {
     return this.authService.register(registerDto)
   }

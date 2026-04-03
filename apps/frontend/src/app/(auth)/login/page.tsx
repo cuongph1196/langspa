@@ -27,7 +27,7 @@ export default function LoginPage() {
     try {
       const res = await api.post('/auth/login', data)
       localStorage.setItem('access_token', res.data.data.access_token)
-      window.location.href = '/'
+      window.location.href = '/admin' // Chuyển hướng sau khi đăng nhập thành công
     } catch {
       setError('Email hoặc mật khẩu không đúng.')
     } finally {
@@ -99,14 +99,14 @@ export default function LoginPage() {
           </form>
 
           {/* Phân cách */}
-          <div className="flex items-center gap-3 my-5">
+          {/* <div className="flex items-center gap-3 my-5">
             <div className="flex-1 h-px bg-gray-200" />
             <span className="text-gray-400 text-sm">hoặc</span>
             <div className="flex-1 h-px bg-gray-200" />
-          </div>
+          </div> */}
 
           {/* Đăng nhập Google (UI only) */}
-          <button className="w-full flex items-center justify-center gap-3 py-3 px-4 border border-gray-300 rounded-full text-gray-600 font-medium hover:bg-gray-50 transition-colors">
+          {/* <button className="w-full flex items-center justify-center gap-3 py-3 px-4 border border-gray-300 rounded-full text-gray-600 font-medium hover:bg-gray-50 transition-colors">
             <svg className="h-5 w-5" viewBox="0 0 24 24">
               <path
                 fill="#4285F4"
@@ -126,15 +126,7 @@ export default function LoginPage() {
               />
             </svg>
             Đăng nhập với Google
-          </button>
-
-          {/* Link đăng ký */}
-          <p className="text-center text-gray-500 text-sm mt-6">
-            Chưa có tài khoản?{' '}
-            <Link href="/register" className="text-primary-600 font-semibold hover:underline">
-              Đăng ký ngay
-            </Link>
-          </p>
+          </button> */}
         </div>
       </div>
     </div>

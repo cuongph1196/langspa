@@ -7,6 +7,7 @@ import { ServicesModule } from './modules/services/services.module'
 import { BookingsModule } from './modules/bookings/bookings.module'
 import { ProductsModule } from './modules/products/products.module'
 import { BranchesModule } from './modules/branches/branches.module'
+import { ReportsModule } from './modules/reports/reports.module'
 
 @Module({
   imports: [
@@ -22,8 +23,8 @@ import { BranchesModule } from './modules/branches/branches.module'
         type: 'postgres',
         host: configService.get('DB_HOST', 'localhost'),
         port: +configService.get<number>('DB_PORT', 5432),
-        username: configService.get('DB_USERNAME', 'postgres'),
-        password: configService.get('DB_PASSWORD', 'postgres'),
+        username: configService.get('DB_USERNAME', 'admin'),
+        password: configService.get('DB_PASSWORD', 'Lang202604@'),
         database: configService.get('DB_DATABASE', 'langspa'),
         entities: [__dirname + '/**/*.entity{.ts,.js}'],
         synchronize: configService.get('NODE_ENV') !== 'production',
@@ -38,6 +39,7 @@ import { BranchesModule } from './modules/branches/branches.module'
     BookingsModule,
     ProductsModule,
     BranchesModule,
+    ReportsModule,
   ],
 })
 export class AppModule {}

@@ -1,8 +1,6 @@
 import type { Metadata } from 'next'
 import { Inter, Playfair_Display } from 'next/font/google'
 import './globals.css'
-import Header from '@/components/layout/Header'
-import Footer from '@/components/layout/Footer'
 import QueryProvider from '@/lib/QueryProvider'
 
 // Font chữ chính - Inter cho body
@@ -38,9 +36,7 @@ export default function RootLayout({
     <html lang="vi" className={`${inter.variable} ${playfairDisplay.variable}`}>
       <body className="min-h-screen flex flex-col">
         <QueryProvider>
-          <Header />
-          <main className="flex-1">{children}</main>
-          <Footer />
+          {children}
         </QueryProvider>
       </body>
     </html>

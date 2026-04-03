@@ -1,4 +1,4 @@
-// Danh mục dịch vụ spa
+// Danh mục dịch vụ spa (legacy - kept for reference)
 export interface ServiceCategory {
   id: string
   name: string
@@ -14,7 +14,7 @@ export interface Service {
   description: string
   price: number
   duration: number // phút
-  category: ServiceCategory
+  category: string
   imageUrl: string
   isActive: boolean
   createdAt: string

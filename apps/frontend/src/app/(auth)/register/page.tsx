@@ -2,7 +2,8 @@
 
 import Link from 'next/link'
 import { useForm } from 'react-hook-form'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
+import { useRouter } from 'next/navigation'
 import api from '@/lib/api'
 
 interface RegisterFormData {
@@ -14,10 +15,18 @@ interface RegisterFormData {
   agreeTerms: boolean
 }
 
-// Trang đăng ký tài khoản
+// Trang đăng ký tài khoản (chỉ dành cho người đã đăng nhập)
 export default function RegisterPage() {
   const [error, setError] = useState('')
   const [isLoading, setIsLoading] = useState(false)
+  const router = useRouter()
+
+  useEffect(() => {
+    const token = localStorage.getItem('access_token')
+    if (!token) {
+      router.replace('/login')
+    }
+  }, [router])
 
   const {
     register,

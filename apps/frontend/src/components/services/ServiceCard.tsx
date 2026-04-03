@@ -23,7 +23,7 @@ export default function ServiceCard({ service }: ServiceCardProps) {
         {/* Badge danh mục */}
         <div className="absolute top-3 left-3">
           <span className="bg-white/90 backdrop-blur-sm text-primary-600 text-xs font-medium px-2.5 py-1 rounded-full">
-            {service.category.name}
+            {service.category}
           </span>
         </div>
       </div>

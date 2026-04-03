@@ -13,7 +13,7 @@ const featuredServices = [
     imageUrl: 'https://images.unsplash.com/photo-1570172619644-dfd03ed5d881?w=400&q=80',
     isActive: true,
     createdAt: '',
-    category: { id: '1', name: 'Chăm sóc da', slug: 'cham-soc-da', icon: '✨' },
+    category: 'Chăm sóc da',
   },
   {
     id: '2',
@@ -25,7 +25,7 @@ const featuredServices = [
     imageUrl: 'https://images.unsplash.com/photo-1544161515-4ab6ce6db874?w=400&q=80',
     isActive: true,
     createdAt: '',
-    category: { id: '2', name: 'Massage', slug: 'massage', icon: '💆' },
+    category: 'Massage',
   },
   {
     id: '3',
@@ -37,7 +37,7 @@ const featuredServices = [
     imageUrl: 'https://images.unsplash.com/photo-1559599101-f09722fb4948?w=400&q=80',
     isActive: true,
     createdAt: '',
-    category: { id: '3', name: 'Triệt lông', slug: 'triet-long', icon: '⚡' },
+    category: 'Triệt lông',
   },
   {
     id: '4',
@@ -49,7 +49,7 @@ const featuredServices = [
     imageUrl: 'https://images.unsplash.com/photo-1522337360788-8b13dee7a37e?w=400&q=80',
     isActive: true,
     createdAt: '',
-    category: { id: '4', name: 'Tóc', slug: 'toc', icon: '💇' },
+    category: 'Chăm sóc tóc',
   },
 ]
 

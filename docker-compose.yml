@@ -6,8 +6,8 @@ services:
     container_name: langspa-postgres
     environment:
       POSTGRES_DB: langspa
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: postgres
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: Lang202604@
     ports:
       - '5432:5432'
     volumes:
