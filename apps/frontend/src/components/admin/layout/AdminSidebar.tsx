@@ -1,7 +1,7 @@
 'use client'
 
 import Link from 'next/link'
-import { usePathname } from 'next/navigation'
+import { usePathname, useRouter } from 'next/navigation'
 import {
   LayoutDashboard,
   CalendarCheck,
@@ -12,21 +12,49 @@ import {
   BarChart3,
   Flower2,
   ChevronRight,
+  LogOut,
 } from 'lucide-react'
 import { cn } from '@/lib/utils'
+import { useAuthStore } from '@/store/auth.store'
+import { getRoleDisplayName } from '@/lib/auth'
+import { UserRole } from '@/types/user'
 
-const navItems = [
-  { label: 'Tổng quan', href: '/admin', icon: LayoutDashboard, exact: true },
-  { label: 'Đặt lịch', href: '/admin/bookings', icon: CalendarCheck },
-  { label: 'Dịch vụ', href: '/admin/services', icon: Sparkles },
-  { label: 'Sản phẩm', href: '/admin/products', icon: Package },
-  { label: 'Khách hàng', href: '/admin/customers', icon: Users },
-  { label: 'Nhân viên', href: '/admin/staff', icon: UserCog },
-  { label: 'Báo cáo', href: '/admin/reports', icon: BarChart3 },
+// Định nghĩa menu với requiredRole (null = mọi STAFF đều thấy)
+const navItems: {
+  label: string
+  href: string
+  icon: React.ElementType
+  exact?: boolean
+  requiredRole: UserRole | null
+}[] = [
+  { label: 'Tổng quan', href: '/admin', icon: LayoutDashboard, exact: true, requiredRole: null },
+  { label: 'Đặt lịch', href: '/admin/bookings', icon: CalendarCheck, requiredRole: null },         // STAFF trở lên
+  { label: 'Dịch vụ', href: '/admin/services', icon: Sparkles, requiredRole: 'MANAGER' },          // MANAGER trở lên
+  { label: 'Sản phẩm', href: '/admin/products', icon: Package, requiredRole: 'MANAGER' },
+  { label: 'Khách hàng', href: '/admin/customers', icon: Users, requiredRole: 'MANAGER' },
+  { label: 'Nhân viên', href: '/admin/staff', icon: UserCog, requiredRole: 'MANAGER' },
+  { label: 'Báo cáo', href: '/admin/reports', icon: BarChart3, requiredRole: 'MANAGER' },
 ]
 
 export default function AdminSidebar() {
   const pathname = usePathname()
+  const router = useRouter()
+  const { user, clearAuth, hasRole } = useAuthStore()
+
+  // Đăng xuất và xóa auth state
+  const handleLogout = () => {
+    clearAuth()
+    router.replace('/login')
+  }
+
+  // Lọc menu theo quyền của user
+  const visibleItems = navItems.filter((item) => {
+    if (!item.requiredRole) return true  // Mặc định mọi STAFF đều thấy
+    return hasRole(item.requiredRole)
+  })
+
+  // Tên vai trò hiển thị (dùng helper từ lib/auth)
+  const roleLabel = user ? getRoleDisplayName(user.role, user.type) : ''
 
   return (
     <aside className="fixed left-0 top-0 h-full w-60 bg-white border-r border-gray-100 shadow-sm z-30 flex flex-col">
@@ -41,9 +69,17 @@ export default function AdminSidebar() {
         </div>
       </div>
 
+      {/* Thông tin user */}
+      {user && (
+        <div className="px-4 py-3 border-b border-gray-100 bg-gray-50">
+          <p className="text-xs font-medium text-gray-700 truncate">{user.email}</p>
+          <p className="text-xs text-gray-400 mt-0.5">{roleLabel}</p>
+        </div>
+      )}
+
       {/* Navigation */}
       <nav className="flex-1 px-3 py-4 space-y-0.5 overflow-y-auto">
-        {navItems.map(({ label, href, icon: Icon, exact }) => {
+        {visibleItems.map(({ label, href, icon: Icon, exact }) => {
           const isActive = exact ? pathname === href : pathname.startsWith(href)
           return (
             <Link
@@ -70,9 +106,15 @@ export default function AdminSidebar() {
         })}
       </nav>
 
-      {/* Footer */}
-      <div className="px-6 py-4 border-t border-gray-100">
-        <p className="text-xs text-gray-400">© 2026 Láng Spa</p>
+      {/* Đăng xuất */}
+      <div className="px-3 py-3 border-t border-gray-100">
+        <button
+          onClick={handleLogout}
+          className="flex items-center gap-3 w-full px-3 py-2.5 rounded-xl text-sm font-medium text-gray-600 hover:bg-red-50 hover:text-red-600 transition-all"
+        >
+          <LogOut size={18} className="shrink-0" />
+          <span>Đăng xuất</span>
+        </button>
       </div>
     </aside>
   )

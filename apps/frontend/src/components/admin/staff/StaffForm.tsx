@@ -11,7 +11,7 @@ interface StaffFormData {
   fullName: string
   phone: string
   email: string
-  role: StaffRole
+  position: StaffRole
   branchId: string
 }
 
@@ -31,7 +31,7 @@ export default function StaffForm({ isOpen, onClose, staff }: StaffFormProps) {
     formState: { errors },
   } = useForm<StaffFormData>({
     defaultValues: staff
-      ? { fullName: staff.fullName, phone: staff.phone, email: staff.email, role: staff.role, branchId: staff.branchId }
+      ? { fullName: staff.fullName, phone: staff.phone ?? '', email: staff.email ?? '', position: staff.position, branchId: staff.branchId ?? '' }
       : undefined,
   })
 
@@ -95,15 +95,16 @@ export default function StaffForm({ isOpen, onClose, staff }: StaffFormProps) {
               Vai trò <span className="text-red-500">*</span>
             </label>
             <select
-              {...register('role', { required: 'Bắt buộc' })}
+              {...register('position', { required: 'Bắt buộc' })}
               className="w-full px-3 py-2 text-sm border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary-300 bg-white"
             >
               <option value="">-- Chọn --</option>
               <option value="TECHNICIAN">Kỹ thuật viên</option>
               <option value="RECEPTIONIST">Lễ tân</option>
               <option value="MANAGER">Quản lý</option>
+              <option value="CASHIER">Thu ngân</option>
             </select>
-            {errors.role && <p className="text-red-500 text-xs mt-1">{errors.role.message}</p>}
+            {errors.position && <p className="text-red-500 text-xs mt-1">{errors.position.message}</p>}
           </div>
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-1">

@@ -55,6 +55,7 @@ const roleConfig: Record<StaffRole, { label: string; className: string }> = {
   TECHNICIAN:   { label: 'Kỹ thuật viên', className: 'bg-purple-100 text-purple-700' },
   RECEPTIONIST: { label: 'Lễ tân',        className: 'bg-blue-100   text-blue-700'   },
   MANAGER:      { label: 'Quản lý',       className: 'bg-orange-100 text-orange-700' },
+  CASHIER:      { label: 'Thu ngân',      className: 'bg-teal-100   text-teal-700'   },
 }
 
 interface StaffRoleBadgeProps {

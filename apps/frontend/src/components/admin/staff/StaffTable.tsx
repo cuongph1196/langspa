@@ -38,12 +38,12 @@ export default function StaffTable({ staff, loading, onEdit, onDelete }: StaffTa
     {
       key: 'phone',
       header: 'Số điện thoại',
-      render: (row: Staff) => <span className="text-gray-600">{row.phone}</span>,
+      render: (row: Staff) => <span className="text-gray-600">{row.phone ?? '—'}</span>,
     },
     {
-      key: 'role',
+      key: 'position',
       header: 'Vai trò',
-      render: (row: Staff) => <StaffRoleBadge role={row.role} />,
+      render: (row: Staff) => row.position ? <StaffRoleBadge role={row.position} /> : <span className="text-gray-400">—</span>,
     },
     {
       key: 'branchName',

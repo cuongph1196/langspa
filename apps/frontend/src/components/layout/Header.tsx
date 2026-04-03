@@ -1,9 +1,11 @@
 'use client'
 
-import { useState, useEffect, useRef } from 'react'
+import { useState } from 'react'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import { Menu, X, Flower2, ChevronDown, LogOut, Mail, Shield, LayoutDashboard } from 'lucide-react'
+import { useAuthStore } from '@/store/auth.store'
+import { getRoleDisplayName } from '@/lib/auth'
 
 // Danh sách menu điều hướng
 const navLinks = [
@@ -16,51 +18,25 @@ const navLinks = [
   { href: '/contact', label: 'Liên hệ' },
 ]
 
-const roleLabels: Record<string, string> = {
-  MANAGER: 'Quản lý',
-  TECHNICIAN: 'Kỹ thuật viên',
-  RECEPTIONIST: 'Lễ tân',
-  CASHIER: 'Thu ngân',
-  CUSTOMER: 'Khách hàng',
-}
-
-const adminRoles = ['MANAGER', 'TECHNICIAN', 'RECEPTIONIST', 'CASHIER']
-
-function decodeToken(token: string): { fullName?: string; email?: string; role?: string } {
-  try {
-    const payload = JSON.parse(atob(token.split('.')[1]))
-    return { fullName: payload.fullName, email: payload.email, role: payload.role }
-  } catch {
-    return {}
-  }
-}
-
 export default function Header() {
   const router = useRouter()
   const [isMenuOpen, setIsMenuOpen] = useState(false)
   const [profileOpen, setProfileOpen] = useState(false)
-  const [profile, setProfile] = useState<{ fullName?: string; email?: string; role?: string } | null>(null)
-  const profileRef = useRef<HTMLDivElement>(null)
+  const { user, clearAuth, isStaff } = useAuthStore()
 
-  useEffect(() => {
-    const token = localStorage.getItem('access_token')
-    if (token) {
-      setProfile(decodeToken(token))
-    }
-  }, [])
-
-  const initials = profile?.fullName
-    ? profile.fullName.split(' ').slice(-2).map((w) => w[0]).join('').toUpperCase()
+  const initials = user?.email
+    ? user.email.split('@')[0].slice(0, 2).toUpperCase()
     : ''
 
+  const roleLabel = user ? getRoleDisplayName(user.role, user.type) : ''
+
   function handleLogout() {
-    localStorage.removeItem('access_token')
-    setProfile(null)
+    clearAuth()
     setProfileOpen(false)
     router.replace('/')
   }
 
-  const isLoggedIn = !!profile
+  const isLoggedIn = !!user
 
   return (
     <header className="sticky top-0 z-50 bg-white/95 backdrop-blur-md shadow-sm border-b border-pink-100">
@@ -90,7 +66,7 @@ export default function Header() {
           {/* Nút hành động */}
           <div className="hidden md:flex items-center gap-3">
             {isLoggedIn ? (
-              <div className="relative" ref={profileRef}>
+              <div className="relative">
                 <button
                   onClick={() => setProfileOpen((o) => !o)}
                   className="flex items-center gap-2.5 pl-2 pr-3 py-1.5 rounded-xl hover:bg-pink-50 transition-colors"
@@ -100,12 +76,10 @@ export default function Header() {
                   </div>
                   <div className="text-left">
                     <p className="text-sm font-semibold text-gray-800 leading-tight">
-                      {profile?.fullName}
+                      {user?.email}
                     </p>
-                    {profile?.role && (
-                      <p className="text-xs text-gray-400 leading-tight">
-                        {roleLabels[profile.role] ?? profile.role}
-                      </p>
+                    {roleLabel && (
+                      <p className="text-xs text-gray-400 leading-tight">{roleLabel}</p>
                     )}
                   </div>
                   <ChevronDown className="w-3.5 h-3.5 text-gray-400 shrink-0" />
@@ -122,19 +96,16 @@ export default function Header() {
                             <span className="text-sm font-bold text-primary-700">{initials}</span>
                           </div>
                           <div className="min-w-0">
-                            <p className="text-sm font-semibold text-gray-900 truncate">
-                              {profile?.fullName}
-                            </p>
-                            {profile?.email && (
+                            {user?.email && (
                               <p className="text-xs text-gray-400 truncate flex items-center gap-1 mt-0.5">
                                 <Mail className="w-3 h-3 shrink-0" />
-                                {profile.email}
+                                {user.email}
                               </p>
                             )}
-                            {profile?.role && (
+                            {roleLabel && (
                               <span className="inline-flex items-center gap-1 mt-1.5 text-xs font-medium text-primary-700 bg-primary-50 px-2 py-0.5 rounded-full">
                                 <Shield className="w-3 h-3" />
-                                {roleLabels[profile.role] ?? profile.role}
+                                {roleLabel}
                               </span>
                             )}
                           </div>
@@ -143,7 +114,8 @@ export default function Header() {
 
                       {/* Actions */}
                       <div className="py-1">
-                        {profile?.role && adminRoles.includes(profile.role) && (
+                        {/* Nhân viên được vào trang quản trị */}
+                        {isStaff() && (
                           <Link
                             href="/admin"
                             onClick={() => setProfileOpen(false)}

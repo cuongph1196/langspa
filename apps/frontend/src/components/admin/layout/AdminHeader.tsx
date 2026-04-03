@@ -1,9 +1,11 @@
 'use client'
 
 import { usePathname, useRouter } from 'next/navigation'
-import { Bell, ChevronDown, LogOut, User, Mail, Shield } from 'lucide-react'
-import { useState, useMemo } from 'react'
+import { Bell, ChevronDown, LogOut, Mail, Shield } from 'lucide-react'
+import { useState } from 'react'
 import { cn } from '@/lib/utils'
+import { useAuthStore } from '@/store/auth.store'
+import { getRoleDisplayName } from '@/lib/auth'
 
 // Tên breadcrumb theo path segment
 const breadcrumbMap: Record<string, string> = {
@@ -16,14 +18,6 @@ const breadcrumbMap: Record<string, string> = {
   reports: 'Báo cáo',
 }
 
-const roleLabels: Record<string, string> = {
-  MANAGER: 'Quản lý',
-  TECHNICIAN: 'Kỹ thuật viên',
-  RECEPTIONIST: 'Lễ tân',
-  CASHIER: 'Thu ngân',
-  CUSTOMER: 'Khách hàng',
-}
-
 function useBreadcrumb() {
   const pathname = usePathname()
   const segments = pathname.split('/').filter(Boolean)
@@ -34,32 +28,21 @@ function useBreadcrumb() {
   }))
 }
 
-function decodeToken(token: string): { fullName?: string; email?: string; role?: string } {
-  try {
-    const payload = JSON.parse(atob(token.split('.')[1]))
-    return { fullName: payload.fullName, email: payload.email, role: payload.role }
-  } catch {
-    return {}
-  }
-}
-
 export default function AdminHeader() {
   const router = useRouter()
   const breadcrumbs = useBreadcrumb()
   const [menuOpen, setMenuOpen] = useState(false)
+  const { user, clearAuth } = useAuthStore()
 
-  const profile = useMemo(() => {
-    if (typeof window === 'undefined') return {}
-    const token = localStorage.getItem('access_token')
-    return token ? decodeToken(token) : {}
-  }, [])
-
-  const initials = profile.fullName
-    ? profile.fullName.split(' ').slice(-2).map((w: string) => w[0]).join('').toUpperCase()
+  // Lấy chữ viết tắt từ email (vd: admin@spa.com → AD)
+  const initials = user?.email
+    ? user.email.split('@')[0].slice(0, 2).toUpperCase()
     : 'AD'
 
+  const roleLabel = user ? getRoleDisplayName(user.role, user.type) : ''
+
   function handleLogout() {
-    localStorage.removeItem('access_token')
+    clearAuth()
     router.replace('/login')
   }
 
@@ -79,13 +62,13 @@ export default function AdminHeader() {
 
       {/* Actions */}
       <div className="flex items-center gap-3">
-        {/* Notification bell */}
+        {/* Chuông thông báo */}
         <button className="relative p-2 rounded-xl hover:bg-gray-50 transition-colors">
           <Bell className="w-5 h-5 text-gray-500" />
           <span className="absolute top-1.5 right-1.5 w-2 h-2 bg-primary-500 rounded-full" />
         </button>
 
-        {/* Profile menu */}
+        {/* Menu hồ sơ */}
         <div className="relative">
           <button
             onClick={() => setMenuOpen((o) => !o)}
@@ -96,12 +79,10 @@ export default function AdminHeader() {
             </div>
             <div className="text-left hidden sm:block">
               <p className="text-sm font-semibold text-gray-800 leading-tight">
-                {profile.fullName ?? 'Admin'}
+                {user?.email ?? 'Admin'}
               </p>
-              {profile.role && (
-                <p className="text-xs text-gray-400 leading-tight">
-                  {roleLabels[profile.role] ?? profile.role}
-                </p>
+              {roleLabel && (
+                <p className="text-xs text-gray-400 leading-tight">{roleLabel}</p>
               )}
             </div>
             <ChevronDown className="w-3.5 h-3.5 text-gray-400 shrink-0" />
@@ -111,33 +92,30 @@ export default function AdminHeader() {
             <>
               <div className="fixed inset-0 z-10" onClick={() => setMenuOpen(false)} />
               <div className="absolute right-0 top-full mt-1.5 w-64 bg-white rounded-xl shadow-lg border border-gray-100 z-20 overflow-hidden">
-                {/* Profile info card */}
+                {/* Thông tin hồ sơ */}
                 <div className="px-4 py-4 bg-gray-50 border-b border-gray-100">
                   <div className="flex items-center gap-3">
                     <div className="w-10 h-10 bg-primary-100 rounded-full flex items-center justify-center shrink-0">
                       <span className="text-sm font-bold text-primary-700">{initials}</span>
                     </div>
                     <div className="min-w-0">
-                      <p className="text-sm font-semibold text-gray-900 truncate">
-                        {profile.fullName ?? 'Admin'}
-                      </p>
-                      {profile.email && (
+                      {user?.email && (
                         <p className="text-xs text-gray-400 truncate flex items-center gap-1 mt-0.5">
                           <Mail className="w-3 h-3 shrink-0" />
-                          {profile.email}
+                          {user.email}
                         </p>
                       )}
-                      {profile.role && (
+                      {roleLabel && (
                         <span className="inline-flex items-center gap-1 mt-1.5 text-xs font-medium text-primary-700 bg-primary-50 px-2 py-0.5 rounded-full">
                           <Shield className="w-3 h-3" />
-                          {roleLabels[profile.role] ?? profile.role}
+                          {roleLabel}
                         </span>
                       )}
                     </div>
                   </div>
                 </div>
 
-                {/* Actions */}
+                {/* Hành động */}
                 <div className="py-1">
                   <button
                     onClick={handleLogout}

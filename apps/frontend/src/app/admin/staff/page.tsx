@@ -15,6 +15,7 @@ const roleOptions: { value: '' | StaffRole; label: string }[] = [
   { value: 'TECHNICIAN', label: 'Kỹ thuật viên' },
   { value: 'RECEPTIONIST', label: 'Lễ tân' },
   { value: 'MANAGER', label: 'Quản lý' },
+  { value: 'CASHIER', label: 'Thu ngân' },
 ]
 
 export default function AdminStaffPage() {
@@ -31,8 +32,8 @@ export default function AdminStaffPage() {
   })
 
   const filtered = staff.filter((s) => {
-    const matchSearch = !search || s.fullName.toLowerCase().includes(search.toLowerCase()) || s.phone.includes(search)
-    const matchRole = !roleFilter || s.role === roleFilter
+    const matchSearch = !search || s.fullName.toLowerCase().includes(search.toLowerCase()) || (s.phone ?? '').includes(search)
+    const matchRole = !roleFilter || s.position === roleFilter
     return matchSearch && matchRole
   })
 

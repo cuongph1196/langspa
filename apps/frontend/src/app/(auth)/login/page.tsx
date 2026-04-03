@@ -3,7 +3,10 @@
 import Link from 'next/link'
 import { useForm } from 'react-hook-form'
 import { useState } from 'react'
+import { useRouter } from 'next/navigation'
 import api from '@/lib/api'
+import { decodeJwt, getRedirectAfterLogin } from '@/lib/auth'
+import { useAuthStore } from '@/store/auth.store'
 
 interface LoginFormData {
   email: string
@@ -14,6 +17,7 @@ interface LoginFormData {
 export default function LoginPage() {
   const [error, setError] = useState('')
   const [isLoading, setIsLoading] = useState(false)
+  const router = useRouter()
 
   const {
     register,
@@ -26,8 +30,18 @@ export default function LoginPage() {
     setError('')
     try {
       const res = await api.post('/auth/login', data)
-      localStorage.setItem('access_token', res.data.data.access_token)
-      window.location.href = '/admin' // Chuyển hướng sau khi đăng nhập thành công
+      const access_token: string = res.data.data?.access_token ?? res.data.access_token
+
+      // Decode JWT để lấy thông tin user (type, role)
+      const authUser = decodeJwt(access_token)
+      if (authUser) {
+        useAuthStore.getState().setAuth(authUser, access_token)
+        router.push(getRedirectAfterLogin(authUser))
+      } else {
+        // Fallback nếu không decode được token
+        localStorage.setItem('access_token', access_token)
+        router.push('/admin')
+      }
     } catch {
       setError('Email hoặc mật khẩu không đúng.')
     } finally {

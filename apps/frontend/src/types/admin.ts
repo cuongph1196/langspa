@@ -4,27 +4,32 @@ import { MembershipLevel, User } from './user'
 
 // ─── Staff / Nhân viên ────────────────────────────────────────────────────────
 
-export type StaffRole = 'TECHNICIAN' | 'RECEPTIONIST' | 'MANAGER'
+// Chức vụ nhân viên (vị trí công việc)
+export type StaffPosition = 'TECHNICIAN' | 'RECEPTIONIST' | 'MANAGER' | 'CASHIER'
+
+// Giữ lại alias để tránh breaking change ở các component đang dùng
+export type StaffRole = StaffPosition
 
 export interface Staff {
   id: string
+  userId: string
   fullName: string
-  phone: string
-  email: string
-  role: StaffRole
-  branchId: string
-  branchName: string
-  avatar?: string
+  phone?: string
+  email?: string
+  position?: StaffPosition
+  branchId?: string
+  branchName?: string
   isActive: boolean
   createdAt: string
 }
 
 export interface CreateStaffDto {
-  fullName: string
-  phone: string
   email: string
-  role: StaffRole
-  branchId: string
+  password: string
+  phone?: string
+  fullName: string
+  position?: StaffPosition
+  branchId?: string
 }
 
 // ─── Product / Sản phẩm ──────────────────────────────────────────────────────
@@ -70,11 +75,19 @@ export interface UpdateBookingStatusDto {
 
 // ─── Customer (Admin extended) ───────────────────────────────────────────────
 
-export interface AdminCustomer extends User {
+export interface AdminCustomer {
+  id: string
+  userId: string
+  fullName: string
+  phone: string
+  email: string
+  membershipLevel: MembershipLevel
+  points: number
   totalBookings: number
   totalSpent: number
   lastBookingAt?: string
   notes?: string
+  createdAt: string
 }
 
 export interface UpdateCustomerDto {
