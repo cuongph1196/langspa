@@ -1,7 +1,7 @@
 import { Injectable, NotFoundException } from '@nestjs/common'
 import { InjectRepository } from '@nestjs/typeorm'
 import { Repository, FindOptionsWhere } from 'typeorm'
-import { Booking } from './entities/booking.entity'
+import { Booking, BookingStatus } from './entities/booking.entity'
 
 // DTO tạo đặt lịch
 interface CreateBookingData {
@@ -9,11 +9,15 @@ interface CreateBookingData {
   branchId: string
   bookingDate: string
   timeSlot: string
-  fullName: string
-  phone: string
-  email: string
   notes?: string
-  userId?: string
+  // Khách hàng đã đăng ký
+  customerId?: string
+  staffId?: string
+  // Khách vãng lai chưa đăng ký
+  guestName?: string
+  guestPhone?: string
+  guestEmail?: string
+  createdBy?: string
 }
 
 @Injectable()
@@ -31,18 +35,21 @@ export class BookingsService {
       bookingDate: data.bookingDate,
       timeSlot: data.timeSlot,
       notes: data.notes,
-      customerName: data.fullName,
-      customerPhone: data.phone,
-      customerEmail: data.email,
-      status: 'PENDING',
+      customerId: data.customerId ?? null,
+      staffId: data.staffId ?? null,
+      guestName: data.guestName ?? null,
+      guestPhone: data.guestPhone ?? null,
+      guestEmail: data.guestEmail ?? null,
+      createdBy: data.createdBy ?? null,
+      status: BookingStatus.PENDING,
     })
     return this.bookingsRepository.save(booking)
   }
 
-  // Lấy danh sách đặt lịch của user
-  async findByUser(userId: string): Promise<Booking[]> {
+  // Lấy danh sách đặt lịch của khách hàng
+  async findByCustomer(customerId: string): Promise<Booking[]> {
     return this.bookingsRepository.find({
-      where: { user: { id: userId } },
+      where: { customerId },
       order: { createdAt: 'DESC' },
     })
   }
@@ -54,16 +61,16 @@ export class BookingsService {
     status?: string
     date?: string
     branchId?: string
-    userId?: string
+    customerId?: string
   }) {
-    const { page = 1, limit = 15, status, date, branchId, userId } = options
+    const { page = 1, limit = 15, status, date, branchId, customerId } = options
     const skip = (page - 1) * limit
 
     const where: FindOptionsWhere<Booking> = {}
-    if (status) where.status = status
+    if (status) where.status = status as BookingStatus
     if (date) where.bookingDate = date
     if (branchId) where.branchId = branchId
-    if (userId) where.user = { id: userId }
+    if (customerId) where.customerId = customerId
 
     const [items, total] = await this.bookingsRepository.findAndCount({
       where,
@@ -99,7 +106,7 @@ export class BookingsService {
 
   // Cập nhật trạng thái đặt lịch
   async updateStatus(id: string, status: string): Promise<Booking> {
-    await this.bookingsRepository.update(id, { status })
+    await this.bookingsRepository.update(id, { status: status as BookingStatus })
     const booking = await this.bookingsRepository.findOne({ where: { id } })
     if (!booking) throw new NotFoundException('Không tìm thấy lịch hẹn')
     return booking

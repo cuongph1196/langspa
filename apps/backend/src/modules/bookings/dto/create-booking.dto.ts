@@ -1,4 +1,4 @@
-import { IsString, IsEmail, IsDateString, IsOptional, Matches } from 'class-validator'
+import { IsString, IsEmail, IsDateString, IsOptional, Matches, IsUUID } from 'class-validator'
 import { ApiProperty } from '@nestjs/swagger'
 
 // DTO tạo lịch hẹn mới
@@ -19,21 +19,37 @@ export class CreateBookingDto {
   @IsString()
   timeSlot: string
 
-  @ApiProperty({ example: 'Nguyễn Thị Hoa' })
-  @IsString()
-  fullName: string
-
-  @ApiProperty({ example: '0901234567' })
-  @IsString()
-  @Matches(/^(0|\+84)[3-9][0-9]{8}$/, { message: 'Số điện thoại không hợp lệ' })
-  phone: string
-
-  @ApiProperty({ example: 'email@example.com' })
-  @IsEmail()
-  email: string
-
   @ApiProperty({ required: false })
   @IsString()
   @IsOptional()
   notes?: string
+
+  // Khách hàng đã đăng ký
+  @ApiProperty({ required: false, description: 'ID khách hàng đã đăng ký' })
+  @IsUUID()
+  @IsOptional()
+  customerId?: string
+
+  // Nhân viên thực hiện dịch vụ
+  @ApiProperty({ required: false, description: 'ID nhân viên thực hiện' })
+  @IsUUID()
+  @IsOptional()
+  staffId?: string
+
+  // Thông tin khách vãng lai (nếu chưa có tài khoản)
+  @ApiProperty({ required: false, example: 'Nguyễn Thị Hoa', description: 'Tên khách vãng lai' })
+  @IsString()
+  @IsOptional()
+  guestName?: string
+
+  @ApiProperty({ required: false, example: '0901234567', description: 'SĐT khách vãng lai' })
+  @IsString()
+  @IsOptional()
+  @Matches(/^(0|\+84)[3-9][0-9]{8}$/, { message: 'Số điện thoại không hợp lệ' })
+  guestPhone?: string
+
+  @ApiProperty({ required: false, example: 'email@example.com', description: 'Email khách vãng lai' })
+  @IsEmail()
+  @IsOptional()
+  guestEmail?: string
 }

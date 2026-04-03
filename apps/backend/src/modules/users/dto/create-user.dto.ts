@@ -1,12 +1,8 @@
-import { IsString, IsEmail, IsOptional, IsEnum, IsArray, MinLength } from 'class-validator'
+import { IsString, IsEmail, IsOptional, IsEnum, MinLength } from 'class-validator'
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger'
-import { UserRole } from '../entities/user.entity'
+import { UserRole, UserType } from '../entities/user.entity'
 
 export class CreateUserDto {
-  @ApiProperty({ example: 'Trần Thị Mai' })
-  @IsString()
-  fullName: string
-
   @ApiProperty({ example: 'mai.tran@langspa.com' })
   @IsEmail()
   email: string
@@ -21,33 +17,17 @@ export class CreateUserDto {
   @IsString()
   phone?: string
 
-  @ApiPropertyOptional({ enum: UserRole, example: UserRole.CUSTOMER, default: UserRole.CUSTOMER })
+  @ApiProperty({ enum: UserType, example: UserType.STAFF, description: 'Loại tài khoản' })
+  @IsEnum(UserType)
+  type: UserType
+
+  @ApiPropertyOptional({ enum: UserRole, example: UserRole.STAFF, description: 'Vai trò phân quyền (chỉ dành cho STAFF)' })
   @IsOptional()
   @IsEnum(UserRole)
   role?: UserRole
 
-  @ApiPropertyOptional({ example: 'uuid-branch-id' })
-  @IsOptional()
-  @IsString()
-  branchId?: string
-
-  @ApiPropertyOptional({
-    type: [String],
-    example: ['Chăm sóc da', 'Massage'],
-    description: 'Danh sách dịch vụ có thể thực hiện (dành cho kỹ thuật viên)',
-  })
-  @IsOptional()
-  @IsArray()
-  @IsString({ each: true })
-  specialties?: string[]
-
   @ApiPropertyOptional()
   @IsOptional()
   @IsString()
-  avatarUrl?: string
-
-  @ApiPropertyOptional({ example: 'Kỹ thuật viên cấp cao' })
-  @IsOptional()
-  @IsString()
-  position?: string
+  avatar?: string
 }

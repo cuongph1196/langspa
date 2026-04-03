@@ -8,6 +8,7 @@ import * as bcrypt from 'bcryptjs'
 import { UsersService } from '../users/users.service'
 import { LoginDto } from './dto/login.dto'
 import { RegisterDto } from './dto/register.dto'
+import { User } from '../users/entities/user.entity'
 
 @Injectable()
 export class AuthService {
@@ -32,8 +33,8 @@ export class AuthService {
       password: hashedPassword,
     })
 
-    const token = this.generateToken(user.id, user.email)
-    const { password: _, ...userWithoutPassword } = user
+    const token = this.generateToken(user)
+    const { password: _, ...userWithoutPassword } = user as any
 
     return { user: userWithoutPassword, access_token: token }
   }
@@ -45,15 +46,15 @@ export class AuthService {
       throw new UnauthorizedException('Email hoặc mật khẩu không đúng')
     }
 
-    const token = this.generateToken(user.id, user.email)
-    const { password: _, ...userWithoutPassword } = user
+    const token = this.generateToken(user)
+    const { password: _, ...userWithoutPassword } = user as any
 
     return { user: userWithoutPassword, access_token: token }
   }
 
   // Xác thực user (dùng cho Passport)
   async validateUser(email: string, password: string) {
-    const user = await this.usersService.findByEmail(email)
+    const user = await this.usersService.findByEmailWithPassword(email)
     if (!user) return null
 
     const isPasswordValid = await bcrypt.compare(password, user.password)
@@ -62,8 +63,13 @@ export class AuthService {
     return user
   }
 
-  // Tạo JWT token
-  private generateToken(userId: string, email: string): string {
-    return this.jwtService.sign({ sub: userId, email })
+  // Tạo JWT token với đầy đủ thông tin type và role
+  private generateToken(user: User): string {
+    return this.jwtService.sign({
+      sub: user.id,
+      email: user.email,
+      type: user.type,
+      role: user.role,
+    })
   }
 }

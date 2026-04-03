@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common'
 import { InjectRepository } from '@nestjs/typeorm'
 import { Repository } from 'typeorm'
-import { Booking } from '../bookings/entities/booking.entity'
+import { Booking, BookingStatus } from '../bookings/entities/booking.entity'
 import { User } from '../users/entities/user.entity'
 import { SpaService } from '../services/entities/service.entity'
 
@@ -31,7 +31,7 @@ export class ReportsService {
       totalActiveServices,
     ] = await Promise.all([
       this.bookingRepo.count({ where: { bookingDate: today } }),
-      this.bookingRepo.count({ where: { bookingDate: today, status: 'PENDING' } }),
+      this.bookingRepo.count({ where: { bookingDate: today, status: BookingStatus.PENDING } }),
       this.userRepo
         .createQueryBuilder('u')
         .where('u.createdAt >= :from', { from: firstDayOfMonth })

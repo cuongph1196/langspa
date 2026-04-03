@@ -6,12 +6,17 @@ import {
   UpdateDateColumn,
 } from 'typeorm'
 
-export enum UserRole {
+// Loại tài khoản: nhân viên hoặc khách hàng
+export enum UserType {
+  STAFF = 'STAFF',
   CUSTOMER = 'CUSTOMER',
+}
+
+// Vai trò phân quyền, chỉ áp dụng cho nhân viên
+export enum UserRole {
+  ADMIN = 'ADMIN',
   MANAGER = 'MANAGER',
-  TECHNICIAN = 'TECHNICIAN',
-  RECEPTIONIST = 'RECEPTIONIST',
-  CASHIER = 'CASHIER',
+  STAFF = 'STAFF',
 }
 
 @Entity('users')
@@ -22,36 +27,28 @@ export class User {
   @Column({ unique: true })
   email: string
 
-  @Column()
+  @Column({ select: false })
   password: string // bcrypt hashed
 
-  @Column()
-  fullName: string
-
-  @Column({ nullable: true })
+  @Column({ nullable: true, unique: true })
   phone: string
 
-  @Column({
-    type: 'enum',
-    enum: UserRole,
-    default: UserRole.CUSTOMER,
-  })
-  role: UserRole
-
   @Column({ nullable: true })
-  branchId: string
+  avatar: string
 
-  @Column({ type: 'text', array: true, nullable: true, default: '{}' })
-  specialties: string[]
+  // Loại tài khoản: STAFF hoặc CUSTOMER
+  @Column({ type: 'enum', enum: UserType })
+  type: UserType
 
-  @Column({ nullable: true })
-  avatarUrl: string
-
-  @Column({ nullable: true })
-  position: string
+  // Vai trò phân quyền — NULL nếu type = CUSTOMER
+  @Column({ type: 'enum', enum: UserRole, nullable: true })
+  role: UserRole | null
 
   @Column({ default: true })
   isActive: boolean
+
+  @Column({ type: 'timestamp', nullable: true })
+  lastLoginAt: Date | null
 
   @CreateDateColumn()
   createdAt: Date

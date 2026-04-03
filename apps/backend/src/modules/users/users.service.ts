@@ -2,18 +2,17 @@ import { Injectable, NotFoundException, ConflictException } from '@nestjs/common
 import { InjectRepository } from '@nestjs/typeorm'
 import { Repository, ILike, FindOptionsWhere } from 'typeorm'
 import * as bcrypt from 'bcryptjs'
-import { User, UserRole } from './entities/user.entity'
+import { User, UserRole, UserType } from './entities/user.entity'
 
 // DTO cập nhật profile
 interface UpdateUserDto {
-  fullName?: string
   phone?: string
+  avatar?: string
 }
 
 const USER_SAFE_SELECT: (keyof User)[] = [
-  'id', 'email', 'fullName', 'phone', 'role',
-  'branchId', 'specialties', 'avatarUrl', 'position',
-  'isActive', 'createdAt', 'updatedAt',
+  'id', 'email', 'phone', 'avatar', 'type', 'role',
+  'isActive', 'lastLoginAt', 'createdAt', 'updatedAt',
 ]
 
 @Injectable()
@@ -23,9 +22,18 @@ export class UsersService {
     private readonly usersRepository: Repository<User>,
   ) {}
 
-  // Tìm user theo email
+  // Tìm user theo email (không bao gồm password)
   async findByEmail(email: string): Promise<User | null> {
     return this.usersRepository.findOne({ where: { email } })
+  }
+
+  // Tìm user theo email kèm password (dùng cho xác thực đăng nhập)
+  async findByEmailWithPassword(email: string): Promise<User | null> {
+    return this.usersRepository
+      .createQueryBuilder('user')
+      .addSelect('user.password')
+      .where('user.email = :email', { email })
+      .getOne()
   }
 
   // Tìm user theo ID
@@ -53,45 +61,46 @@ export class UsersService {
     limit?: number
     search?: string
     role?: UserRole
-    branchId?: string
+    type?: UserType
   }) {
-    const { page = 1, limit = 15, search, role, branchId } = options
+    const { page = 1, limit = 15, search, role, type } = options
     const skip = (page - 1) * limit
 
     const where: FindOptionsWhere<User> = {}
-    if (search) where.fullName = ILike(`%${search}%`)
     if (role) where.role = role
-    if (branchId) where.branchId = branchId
+    if (type) where.type = type
 
-    const [items, total] = await this.usersRepository.findAndCount({
-      where,
-      skip,
-      take: limit,
-      order: { createdAt: 'DESC' },
-      select: USER_SAFE_SELECT,
-    })
+    const qb = this.usersRepository.createQueryBuilder('user')
+    if (search) {
+      qb.where('user.email ILIKE :search', { search: `%${search}%` })
+    }
+    if (role) qb.andWhere('user.role = :role', { role })
+    if (type) qb.andWhere('user.type = :type', { type })
+
+    const [items, total] = await qb
+      .skip(skip)
+      .take(limit)
+      .orderBy('user.createdAt', 'DESC')
+      .getManyAndCount()
 
     return { items, total, page, totalPages: Math.ceil(total / limit) }
   }
 
   // Tạo user mới từ admin (hash password)
   async createAdmin(data: {
-    fullName: string
     email: string
     password: string
     phone?: string
+    type: UserType
     role?: UserRole
-    branchId?: string
-    specialties?: string[]
-    avatarUrl?: string
-    position?: string
+    avatar?: string
   }): Promise<Omit<User, 'password'>> {
     const exists = await this.usersRepository.findOne({ where: { email: data.email } })
     if (exists) throw new ConflictException('Email đã tồn tại')
     const hashed = await bcrypt.hash(data.password, 10)
     const user = this.usersRepository.create({ ...data, password: hashed })
     const saved = await this.usersRepository.save(user)
-    const { password: _, ...withoutPassword } = saved
+    const { password: _, ...withoutPassword } = saved as any
     return withoutPassword
   }
 
@@ -103,7 +112,7 @@ export class UsersService {
     const user = await this.findById(id)
     Object.assign(user, data)
     const saved = await this.usersRepository.save(user)
-    const { password: _, ...withoutPassword } = saved
+    const { password: _, ...withoutPassword } = saved as any
     return withoutPassword
   }
 

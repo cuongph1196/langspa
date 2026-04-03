@@ -5,6 +5,7 @@ import {
   Patch,
   Param,
   Body,
+  Query,
   UseGuards,
 } from '@nestjs/common'
 import { ApiTags, ApiBearerAuth, ApiOperation } from '@nestjs/swagger'
@@ -25,13 +26,16 @@ export class BookingsController {
     return this.bookingsService.create(createBookingDto)
   }
 
-  // GET /api/bookings/my - Lịch của user đang đăng nhập
+  // GET /api/bookings/my - Lịch của khách hàng đang đăng nhập
   @Get('my')
   @UseGuards(JwtAuthGuard)
   @ApiBearerAuth()
   @ApiOperation({ summary: 'Lấy danh sách lịch hẹn của tôi' })
-  async getMyBookings(@CurrentUser() user: { userId: string }) {
-    return this.bookingsService.findByUser(user.userId)
+  async getMyBookings(
+    @CurrentUser() user: { userId: string },
+    @Query('customerId') customerId?: string,
+  ) {
+    return this.bookingsService.findByCustomer(customerId ?? user.userId)
   }
 
   // PATCH /api/bookings/:id/cancel - Hủy lịch hẹn

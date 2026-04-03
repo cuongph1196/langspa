@@ -16,7 +16,7 @@ import { ApiTags, ApiBearerAuth, ApiOperation, ApiQuery } from '@nestjs/swagger'
 import { UsersService } from './users.service'
 import { CreateUserDto } from './dto/create-user.dto'
 import { AdminUpdateUserDto } from './dto/admin-update-user.dto'
-import { UserRole } from './entities/user.entity'
+import { UserRole, UserType } from './entities/user.entity'
 import { JwtAuthGuard } from '../../common/guards/jwt-auth.guard'
 
 @ApiTags('Admin - Users')
@@ -31,17 +31,17 @@ export class UsersAdminController {
   @ApiOperation({ summary: 'Danh sách user (admin)' })
   @ApiQuery({ name: 'page', required: false, type: Number })
   @ApiQuery({ name: 'limit', required: false, type: Number })
-  @ApiQuery({ name: 'search', required: false, description: 'Tìm theo tên' })
+  @ApiQuery({ name: 'search', required: false, description: 'Tìm theo email' })
   @ApiQuery({ name: 'role', required: false, enum: UserRole, description: 'Lọc theo vai trò' })
-  @ApiQuery({ name: 'branchId', required: false })
+  @ApiQuery({ name: 'type', required: false, enum: UserType, description: 'Lọc theo loại tài khoản' })
   findAll(
     @Query('page') page = 1,
     @Query('limit') limit = 15,
     @Query('search') search?: string,
     @Query('role') role?: UserRole,
-    @Query('branchId') branchId?: string,
+    @Query('type') type?: UserType,
   ) {
-    return this.usersService.findAllAdmin({ page: +page, limit: +limit, search, role, branchId })
+    return this.usersService.findAllAdmin({ page: +page, limit: +limit, search, role, type })
   }
 
   // GET /api/admin/users/:id - Chi tiết user

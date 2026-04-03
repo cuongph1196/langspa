@@ -12,7 +12,6 @@ import { ApiTags, ApiBearerAuth, ApiOperation, ApiQuery } from '@nestjs/swagger'
 import { BookingsService } from './bookings.service'
 import { UpdateBookingStatusDto } from './dto/update-booking-status.dto'
 import { JwtAuthGuard } from '../../common/guards/jwt-auth.guard'
-import { CurrentUser } from 'src/common/decorators/current-user.decorator'
 
 @ApiTags('Admin - Bookings')
 @ApiBearerAuth()
@@ -29,25 +28,22 @@ export class BookingsAdminController {
   @ApiQuery({ name: 'status', required: false, enum: ['PENDING', 'CONFIRMED', 'COMPLETED', 'CANCELLED'] })
   @ApiQuery({ name: 'date', required: false, description: 'Lọc theo ngày YYYY-MM-DD' })
   @ApiQuery({ name: 'branchId', required: false })
-  @ApiQuery({ name: 'userId', required: false })
+  @ApiQuery({ name: 'customerId', required: false })
   findAll(
     @Query('page') page = 1,
     @Query('limit') limit = 15,
     @Query('status') status?: string,
     @Query('date') date?: string,
     @Query('branchId') branchId?: string,
-    @Query('userId') userId?: string,
-    @CurrentUser() currentUser?: { userId: string },
+    @Query('customerId') customerId?: string,
   ) {
-    debugger
-    console.log(currentUser?.userId)
     return this.bookingsService.findAllAdmin({
       page: +page,
       limit: +limit,
       status,
       date,
       branchId,
-      userId,
+      customerId,
     })
   }
 
