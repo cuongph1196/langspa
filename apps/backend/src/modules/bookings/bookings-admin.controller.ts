@@ -12,6 +12,7 @@ import { ApiTags, ApiBearerAuth, ApiOperation, ApiQuery } from '@nestjs/swagger'
 import { BookingsService } from './bookings.service'
 import { UpdateBookingStatusDto } from './dto/update-booking-status.dto'
 import { JwtAuthGuard } from '../../common/guards/jwt-auth.guard'
+import { BookingStatus } from './entities/booking.entity'
 
 @ApiTags('Admin - Bookings')
 @ApiBearerAuth()
@@ -25,7 +26,7 @@ export class BookingsAdminController {
   @ApiOperation({ summary: 'Danh sách tất cả lịch hẹn (admin)' })
   @ApiQuery({ name: 'page', required: false, type: Number })
   @ApiQuery({ name: 'limit', required: false, type: Number })
-  @ApiQuery({ name: 'status', required: false, enum: ['PENDING', 'CONFIRMED', 'COMPLETED', 'CANCELLED'] })
+  @ApiQuery({ name: 'status', required: false, enum: BookingStatus })
   @ApiQuery({ name: 'date', required: false, description: 'Lọc theo ngày YYYY-MM-DD' })
   @ApiQuery({ name: 'branchId', required: false })
   @ApiQuery({ name: 'customerId', required: false })

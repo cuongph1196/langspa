@@ -99,9 +99,8 @@ export class UsersService {
     if (exists) throw new ConflictException('Email đã tồn tại')
     const hashed = await bcrypt.hash(data.password, 10)
     const user = this.usersRepository.create({ ...data, password: hashed })
-    const saved = await this.usersRepository.save(user)
-    const { password: _, ...withoutPassword } = saved as any
-    return withoutPassword
+    const { password: _, ...withoutPassword } = await this.usersRepository.save(user)
+    return withoutPassword as Omit<User, 'password'>
   }
 
   // Cập nhật thông tin user (admin)
@@ -111,9 +110,8 @@ export class UsersService {
   ): Promise<Omit<User, 'password'>> {
     const user = await this.findById(id)
     Object.assign(user, data)
-    const saved = await this.usersRepository.save(user)
-    const { password: _, ...withoutPassword } = saved as any
-    return withoutPassword
+    const { password: _, ...withoutPassword } = await this.usersRepository.save(user)
+    return withoutPassword as Omit<User, 'password'>
   }
 
   // Vô hiệu hóa user (soft delete)

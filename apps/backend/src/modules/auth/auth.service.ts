@@ -34,7 +34,7 @@ export class AuthService {
     })
 
     const token = this.generateToken(user)
-    const { password: _, ...userWithoutPassword } = user as any
+    const { password: _, ...userWithoutPassword } = user as Omit<User, 'password'> & { password?: string }
 
     return { user: userWithoutPassword, access_token: token }
   }
@@ -47,7 +47,7 @@ export class AuthService {
     }
 
     const token = this.generateToken(user)
-    const { password: _, ...userWithoutPassword } = user as any
+    const { password: _, ...userWithoutPassword } = user as Omit<User, 'password'> & { password?: string }
 
     return { user: userWithoutPassword, access_token: token }
   }
