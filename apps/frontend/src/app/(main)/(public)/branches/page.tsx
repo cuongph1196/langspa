@@ -4,7 +4,7 @@ import { MapPin, Phone, Clock } from 'lucide-react'
 const branches = [
   {
     id: '1',
-    name: 'Láng Spa - Đống Đa',
+    name: 'Láng Beauty & Spa - Đống Đa',
     address: '123 Đường Láng, Đống Đa, Hà Nội',
     phone: '024 3xxx xxxx',
     openTime: '08:00',
@@ -13,7 +13,7 @@ const branches = [
   },
   {
     id: '2',
-    name: 'Láng Spa - Cầu Giấy',
+    name: 'Láng Beauty & Spa - Cầu Giấy',
     address: '456 Xuân Thủy, Cầu Giấy, Hà Nội',
     phone: '024 3xxx yyyy',
     openTime: '08:00',
@@ -22,7 +22,7 @@ const branches = [
   },
   {
     id: '3',
-    name: 'Láng Spa - Hoàn Kiếm',
+    name: 'Láng Beauty & Spa - Hoàn Kiếm',
     address: '789 Hàng Bông, Hoàn Kiếm, Hà Nội',
     phone: '024 3xxx zzzz',
     openTime: '09:00',
@@ -36,11 +36,11 @@ export default function BranchesPage() {
   return (
     <div className="min-h-screen bg-gray-50">
       {/* Header */}
-      <div className="bg-gradient-to-r from-primary-600 to-pink-500 py-16">
+      <div className="bg-gradient-to-r from-ink-800 to-ink-600 py-16">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <h1 className="font-serif text-4xl font-bold text-white mb-4">Chi nhánh</h1>
           <p className="text-white/90 text-lg">
-            Tìm chi nhánh Láng Spa gần nhất với bạn
+            Tìm chi nhánh Láng Beauty & Spa gần nhất với bạn
           </p>
         </div>
       </div>

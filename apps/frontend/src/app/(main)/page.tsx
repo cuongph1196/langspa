@@ -3,7 +3,7 @@ import FeaturedServices from '@/components/home/FeaturedServices'
 import Promotions from '@/components/home/Promotions'
 import Testimonials from '@/components/home/Testimonials'
 
-// Trang chủ Láng Spa
+// Trang chủ Láng Beauty & Spa
 export default function HomePage() {
   return (
     <>

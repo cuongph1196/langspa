@@ -22,7 +22,7 @@ export default function ContactPage() {
   return (
     <div className="min-h-screen bg-gray-50">
       {/* Header */}
-      <div className="bg-gradient-to-r from-primary-600 to-pink-500 py-16">
+      <div className="bg-gradient-to-r from-ink-800 to-ink-600 py-16">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <h1 className="font-serif text-4xl font-bold text-white mb-4">Liên hệ</h1>
           <p className="text-white/90 text-lg">Chúng tôi luôn sẵn sàng lắng nghe bạn</p>

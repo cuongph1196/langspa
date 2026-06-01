@@ -35,7 +35,7 @@ export class Customer {
   @JoinColumn({ name: 'user_id' })
   user: User | null
 
-  @Column({ name: 'user_id', nullable: true })
+  @Column({ name: 'user_id', type: 'varchar', nullable: true })
   userId: string | null
 
   @Column()

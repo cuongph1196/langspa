@@ -1,6 +1,7 @@
 'use client'
 
 import Link from 'next/link'
+import Image from 'next/image'
 import { usePathname, useRouter } from 'next/navigation'
 import {
   LayoutDashboard,
@@ -10,7 +11,6 @@ import {
   Users,
   UserCog,
   BarChart3,
-  Flower2,
   ChevronRight,
   LogOut,
 } from 'lucide-react'
@@ -60,11 +60,16 @@ export default function AdminSidebar() {
     <aside className="fixed left-0 top-0 h-full w-60 bg-white border-r border-gray-100 shadow-sm z-30 flex flex-col">
       {/* Logo */}
       <div className="flex items-center gap-2.5 px-6 py-5 border-b border-gray-100">
-        <div className="w-8 h-8 bg-primary-600 rounded-xl flex items-center justify-center">
-          <Flower2 className="w-4 h-4 text-white" />
-        </div>
-        <div>
-          <p className="font-bold text-gray-900 text-sm leading-tight">Láng Spa</p>
+        <Image
+          src="/logo/logo-dark.png"
+          alt="Láng Beauty & Spa"
+          width={56}
+          height={56}
+          className="h-12 w-12 object-contain"
+          priority
+        />
+        <div className="min-w-0">
+          <p className="font-bold text-ink-800 text-sm leading-tight truncate">Láng Beauty & Spa</p>
           <p className="text-xs text-gray-400">Admin Panel</p>
         </div>
       </div>

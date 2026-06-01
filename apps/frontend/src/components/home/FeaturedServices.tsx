@@ -62,7 +62,7 @@ export default function FeaturedServices() {
         <div className="text-center mb-12">
           <h2 className="section-title">Dịch vụ nổi bật</h2>
           <p className="section-subtitle">
-            Khám phá những dịch vụ chăm sóc sắc đẹp được yêu thích nhất tại Láng Spa
+            Khám phá những dịch vụ chăm sóc sắc đẹp được yêu thích nhất tại Láng Beauty & Spa
           </p>
         </div>
 

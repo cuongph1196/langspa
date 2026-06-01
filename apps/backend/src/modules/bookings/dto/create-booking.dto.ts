@@ -1,5 +1,5 @@
 import { IsString, IsEmail, IsDateString, IsOptional, Matches, IsUUID } from 'class-validator'
-import { ApiProperty } from '@nestjs/swagger'
+import { ApiHideProperty, ApiProperty } from '@nestjs/swagger'
 
 // DTO tạo lịch hẹn mới
 export class CreateBookingDto {
@@ -25,13 +25,14 @@ export class CreateBookingDto {
   notes?: string
 
   // Khách hàng đã đăng ký
-  @ApiProperty({ required: false, description: 'ID khách hàng đã đăng ký' })
+  @ApiProperty({ required: false, description: 'ID khách hàng đã đăng ký', example: 'uuid-customer-id' })
   @IsUUID()
   @IsOptional()
   customerId?: string
 
   // Nhân viên thực hiện dịch vụ
-  @ApiProperty({ required: false, description: 'ID nhân viên thực hiện' })
+  @ApiHideProperty() // Ẩn trường này khỏi Swagger, chỉ dùng cho internal
+  @ApiProperty({ required: false, description: 'ID nhân viên thực hiện', example: 'uuid-staff-id' })
   @IsUUID()
   @IsOptional()
   staffId?: string

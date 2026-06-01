@@ -8,6 +8,8 @@ import {
 } from 'typeorm'
 import { Customer } from '../../customers/entities/customer.entity'
 import { Staff } from '../../staff/entities/staff.entity'
+import { SpaService } from '../../services/entities/service.entity'
+import { Branch } from '../../branches/entities/branch.entity'
 
 // Trạng thái lịch hẹn
 export enum BookingStatus {
@@ -20,24 +22,24 @@ export enum BookingStatus {
 @Entity('bookings')
 export class Booking {
   @PrimaryGeneratedColumn('uuid')
-  id: string
+  id!: string
 
   // Khách hàng đã có tài khoản — nullable nếu là khách vãng lai
   @ManyToOne(() => Customer, { nullable: true })
   @JoinColumn({ name: 'customer_id' })
   customer: Customer | null
 
-  @Column({ name: 'customer_id', nullable: true })
+  @Column({ name: 'customer_id', type: 'varchar', nullable: true })
   customerId: string | null
 
   // Thông tin khách vãng lai chưa đăng ký
-  @Column({ nullable: true })
+  @Column({ type: 'varchar', nullable: true })
   guestName: string | null
 
-  @Column({ nullable: true })
+  @Column({ type: 'varchar', nullable: true })
   guestPhone: string | null
 
-  @Column({ nullable: true })
+  @Column({ type: 'varchar', nullable: true })
   guestEmail: string | null
 
   // Nhân viên thực hiện dịch vụ
@@ -45,13 +47,21 @@ export class Booking {
   @JoinColumn({ name: 'staff_id' })
   staff: Staff | null
 
-  @Column({ name: 'staff_id', nullable: true })
+  @Column({ name: 'staff_id', type: 'varchar', nullable: true })
   staffId: string | null
 
-  @Column({ name: 'service_id' })
+  @ManyToOne(() => SpaService, { nullable: false })
+  @JoinColumn({ name: 'service_id' })
+  service: SpaService
+
+  @Column({ name: 'service_id', type: 'varchar' })
   serviceId: string
 
-  @Column({ name: 'branch_id' })
+  @ManyToOne(() => Branch, { nullable: false })
+  @JoinColumn({ name: 'branch_id' })
+  branch: Branch
+
+  @Column({ name: 'branch_id', type: 'varchar' })
   branchId: string
 
   @Column({ type: 'date' })
@@ -67,7 +77,7 @@ export class Booking {
   notes: string | null
 
   // Nhân viên tạo lịch hộ (FK → users.id)
-  @Column({ name: 'created_by', nullable: true })
+  @Column({ name: 'created_by', type: 'varchar', nullable: true })
   createdBy: string | null
 
   @CreateDateColumn()

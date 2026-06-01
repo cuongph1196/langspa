@@ -13,7 +13,7 @@ const serviceData: Record<string, Service & { fullDescription: string }> = {
     slug: 'cham-soc-da-mat',
     description: 'Làm sạch sâu, cấp ẩm và tái tạo da với công nghệ hiện đại.',
     fullDescription: `
-      Liệu trình chăm sóc da mặt toàn diện tại Láng Spa giúp làn da của bạn 
+      Liệu trình chăm sóc da mặt toàn diện tại Láng Beauty & Spa giúp làn da của bạn 
       trở nên mịn màng, căng bóng và rạng rỡ hơn. Với công nghệ hiện đại kết hợp 
       các sản phẩm cao cấp, chúng tôi cam kết mang đến làn da khỏe mạnh cho bạn.
       
@@ -122,7 +122,7 @@ export default function ServiceDetailPage({ params }: ServiceDetailPageProps) {
                     <Link
                       key={s.id}
                       href={`/services/${s.slug}`}
-                      className="flex gap-3 p-3 rounded-xl border border-gray-100 hover:border-primary-200 hover:bg-pink-50 transition-colors"
+                      className="flex gap-3 p-3 rounded-xl border border-gray-100 hover:border-ink-100 hover:bg-ink-50 transition-colors"
                     >
                       <div className="relative w-16 h-16 rounded-lg overflow-hidden flex-shrink-0">
                         <Image src={s.imageUrl} alt={s.name} fill className="object-cover" />

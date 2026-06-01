@@ -14,7 +14,7 @@ export default function BookingPage() {
   return (
     <div className="min-h-screen bg-gray-50">
       {/* Header */}
-      <div className="bg-gradient-to-r from-primary-600 to-pink-500 py-16">
+      <div className="bg-gradient-to-r from-ink-800 to-ink-600 py-16">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <h1 className="font-serif text-4xl font-bold text-white mb-4">Đặt lịch hẹn</h1>
           <p className="text-white/90 text-lg">
@@ -45,7 +45,7 @@ export default function BookingPage() {
             </div>
 
             {/* Cam kết */}
-            <div className="mt-8 bg-pink-50 rounded-2xl p-5">
+            <div className="mt-8 bg-ink-50 rounded-2xl p-5 border border-ink-100">
               <h3 className="font-semibold text-gray-800 mb-3">Cam kết của chúng tôi</h3>
               <ul className="space-y-2">
                 {[

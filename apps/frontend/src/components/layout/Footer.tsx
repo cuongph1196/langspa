@@ -1,5 +1,6 @@
 import Link from 'next/link'
-import { Flower2, MapPin, Phone, Mail, Facebook, Instagram } from 'lucide-react'
+import Image from 'next/image'
+import { MapPin, Phone, Mail, Facebook, Instagram } from 'lucide-react'
 
 export default function Footer() {
   return (
@@ -8,9 +9,17 @@ export default function Footer() {
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
           {/* Logo và tagline */}
           <div className="md:col-span-1">
-            <div className="flex items-center gap-2 mb-3">
-              <Flower2 className="h-7 w-7 text-primary-400" />
-              <span className="font-serif text-xl font-bold text-white">Láng Spa</span>
+            <div className="flex items-center gap-2.5 mb-3">
+              <Image
+                src="/logo/logo-light.png"
+                alt="Láng Beauty & Spa"
+                width={64}
+                height={64}
+                className="h-16 w-16 object-contain"
+              />
+              <span className="font-serif text-xl font-bold text-white leading-tight">
+                Láng Beauty <span className="text-gray-400">&</span> Spa
+              </span>
             </div>
             <p className="text-sm text-gray-400 mb-4">
               Chăm sóc sắc đẹp toàn diện – Nơi vẻ đẹp của bạn được nâng niu.
@@ -110,7 +119,7 @@ export default function Footer() {
 
         {/* Copyright */}
         <div className="mt-8 pt-8 border-t border-gray-800 text-center text-sm text-gray-500">
-          © 2024 Láng Spa. Tất cả quyền được bảo lưu.
+          © 2024 Láng Beauty & Spa. Tất cả quyền được bảo lưu.
         </div>
       </div>
     </footer>

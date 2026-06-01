@@ -104,13 +104,13 @@ export default function ServicesPage() {
   return (
     <div className="min-h-screen bg-gray-50">
       {/* Header trang */}
-      <div className="bg-gradient-to-r from-primary-600 to-pink-500 py-16">
+      <div className="bg-gradient-to-r from-ink-800 to-ink-600 py-16">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <h1 className="font-serif text-4xl font-bold text-white mb-4">
             Dịch vụ của chúng tôi
           </h1>
           <p className="text-white/90 text-lg">
-            Khám phá đa dạng dịch vụ chăm sóc sắc đẹp cao cấp tại Láng Spa
+            Khám phá đa dạng dịch vụ chăm sóc sắc đẹp cao cấp tại Láng Beauty & Spa
           </p>
         </div>
       </div>
@@ -136,7 +136,7 @@ export default function ServicesPage() {
               className={`px-5 py-2 rounded-full font-medium text-sm transition-colors ${
                 activeCategory === cat.id
                   ? 'bg-primary-600 text-white'
-                  : 'bg-white text-gray-600 border border-gray-200 hover:bg-pink-50'
+                  : 'bg-white text-gray-600 border border-gray-200 hover:bg-ink-50'
               }`}
             >
               {cat.name}

@@ -16,13 +16,13 @@ const playfairDisplay = Playfair_Display({
 })
 
 export const metadata: Metadata = {
-  title: 'Láng Spa - Chăm sóc sắc đẹp toàn diện',
+  title: 'Láng Beauty & Spa - Chăm sóc sắc đẹp toàn diện',
   description:
-    'Láng Spa - Trải nghiệm dịch vụ chăm sóc sắc đẹp cao cấp với đội ngũ chuyên gia giàu kinh nghiệm. Đặt lịch ngay hôm nay!',
-  keywords: 'spa, chăm sóc da, massage, làm đẹp, Láng Spa',
+    'Láng Beauty & Spa - Trải nghiệm dịch vụ chăm sóc sắc đẹp cao cấp với đội ngũ chuyên gia giàu kinh nghiệm. Đặt lịch ngay hôm nay!',
+  keywords: 'spa, chăm sóc da, massage, làm đẹp, Láng Beauty & Spa',
   openGraph: {
-    title: 'Láng Spa - Chăm sóc sắc đẹp toàn diện',
-    description: 'Trải nghiệm dịch vụ spa cao cấp tại Láng Spa',
+    title: 'Láng Beauty & Spa - Chăm sóc sắc đẹp toàn diện',
+    description: 'Trải nghiệm dịch vụ spa cao cấp tại Láng Beauty & Spa',
     type: 'website',
   },
 }

@@ -2,8 +2,9 @@
 
 import { useState } from 'react'
 import Link from 'next/link'
+import Image from 'next/image'
 import { useRouter } from 'next/navigation'
-import { Menu, X, Flower2, ChevronDown, LogOut, Mail, Shield, LayoutDashboard } from 'lucide-react'
+import { Menu, X, ChevronDown, LogOut, Mail, Shield, LayoutDashboard } from 'lucide-react'
 import { useAuthStore } from '@/store/auth.store'
 import { getRoleDisplayName } from '@/lib/auth'
 
@@ -39,14 +40,21 @@ export default function Header() {
   const isLoggedIn = !!user
 
   return (
-    <header className="sticky top-0 z-50 bg-white/95 backdrop-blur-md shadow-sm border-b border-pink-100">
+    <header className="sticky top-0 z-50 bg-white/95 backdrop-blur-md shadow-sm border-b border-ink-100">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex items-center justify-between h-16">
+        <div className="flex items-center justify-between h-20">
           {/* Logo */}
-          <Link href="/" className="flex items-center gap-2 group">
-            <Flower2 className="h-7 w-7 text-primary-600 group-hover:text-primary-700 transition-colors" />
-            <span className="font-serif text-xl font-bold text-primary-700">
-              Láng Spa
+          <Link href="/" className="flex items-center gap-2.5 group">
+            <Image
+              src="/logo/logo-dark.png"
+              alt="Láng Beauty & Spa"
+              width={56}
+              height={56}
+              className="h-12 w-12 sm:h-14 sm:w-14 object-contain"
+              priority
+            />
+            <span className="font-serif text-lg sm:text-xl font-bold text-ink-800 leading-tight">
+              Láng Beauty <span className="text-ink-500">&</span> Spa
             </span>
           </Link>
 
@@ -69,7 +77,7 @@ export default function Header() {
               <div className="relative">
                 <button
                   onClick={() => setProfileOpen((o) => !o)}
-                  className="flex items-center gap-2.5 pl-2 pr-3 py-1.5 rounded-xl hover:bg-pink-50 transition-colors"
+                  className="flex items-center gap-2.5 pl-2 pr-3 py-1.5 rounded-xl hover:bg-ink-50 transition-colors"
                 >
                   <div className="w-8 h-8 bg-primary-100 rounded-full flex items-center justify-center shrink-0">
                     <span className="text-xs font-bold text-primary-700">{initials}</span>
@@ -152,7 +160,7 @@ export default function Header() {
 
           {/* Hamburger menu (mobile) */}
           <button
-            className="md:hidden p-2 rounded-lg text-gray-600 hover:bg-pink-50 transition-colors"
+            className="md:hidden p-2 rounded-lg text-gray-600 hover:bg-ink-50 transition-colors"
             onClick={() => setIsMenuOpen(!isMenuOpen)}
             aria-label="Toggle menu"
           >
@@ -163,7 +171,7 @@ export default function Header() {
 
       {/* Mobile menu */}
       {isMenuOpen && (
-        <div className="md:hidden bg-white border-t border-pink-100 px-4 py-4">
+        <div className="md:hidden bg-white border-t border-ink-100 px-4 py-4">
           <nav className="flex flex-col gap-3">
             {navLinks.map((link) => (
               <Link

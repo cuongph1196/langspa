@@ -7,9 +7,9 @@ import api from '@/lib/api'
 
 // Dữ liệu mẫu chi nhánh
 const branches = [
-  { id: '1', name: 'Láng Spa - Đống Đa' },
-  { id: '2', name: 'Láng Spa - Cầu Giấy' },
-  { id: '3', name: 'Láng Spa - Hoàn Kiếm' },
+  { id: '1', name: 'Láng Beauty & Spa - Đống Đa' },
+  { id: '2', name: 'Láng Beauty & Spa - Cầu Giấy' },
+  { id: '3', name: 'Láng Beauty & Spa - Hoàn Kiếm' },
 ]
 
 // Khung giờ có sẵn
@@ -194,7 +194,7 @@ export default function BookingForm({ serviceId }: { serviceId?: string }) {
                       className={`block text-center py-2 px-3 rounded-lg border text-sm transition-colors ${
                         watch('timeSlot') === time
                           ? 'border-primary-500 bg-primary-50 text-primary-600 font-medium'
-                          : 'border-gray-200 hover:border-primary-300 hover:bg-pink-50'
+                          : 'border-gray-200 hover:border-ink-300 hover:bg-ink-50'
                       }`}
                     >
                       {time}

@@ -40,7 +40,7 @@ export default function Promotions() {
         <div className="text-center mb-12">
           <h2 className="section-title">Ưu đãi đặc biệt</h2>
           <p className="section-subtitle">
-            Tiết kiệm hơn với các combo và gói dịch vụ đặc biệt tại Láng Spa
+            Tiết kiệm hơn với các combo và gói dịch vụ đặc biệt tại Láng Beauty & Spa
           </p>
         </div>
 

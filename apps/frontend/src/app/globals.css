@@ -3,10 +3,18 @@
 @tailwind utilities;
 
 :root {
-  --color-primary: #db2777;
-  --color-secondary: #eab308;
-  --color-spa-rose: #f9a8d4;
-  --color-spa-gold: #fbbf24;
+  /* Bảng màu chủ đạo — neutral */
+  --color-ink: #1A1A1A;
+  --color-ink-soft: #3D3D3D;
+  --color-stone-mid: #888780;
+  --color-stone-light: #D3D1C7;
+  --color-cream: #F8F6F2;
+
+  /* Alias giữ tương thích với code cũ */
+  --color-primary: #1A1A1A;
+  --color-secondary: #3D3D3D;
+  --color-spa-rose: #D3D1C7;
+  --color-spa-gold: #888780;
 }
 
 @layer base {
@@ -14,38 +22,43 @@
     scroll-behavior: smooth;
   }
   body {
-    @apply font-sans text-gray-800;
+    @apply font-sans bg-cream text-ink-800;
   }
   h1,
   h2,
   h3 {
-    @apply font-serif;
+    @apply font-serif text-ink-800;
   }
 }
 
 @layer components {
-  /* Nút chính - màu hồng */
+  /* Nút chính - đen chủ đạo */
   .btn-primary {
-    @apply bg-primary-600 hover:bg-primary-700 text-white font-semibold py-3 px-6 rounded-full transition-all duration-300 shadow-md hover:shadow-lg;
+    @apply bg-ink-800 hover:bg-ink-900 text-cream font-semibold py-3 px-6 rounded-full transition-all duration-300 shadow-md hover:shadow-lg;
   }
 
-  /* Nút phụ - màu vàng */
+  /* Nút phụ - xám đậm */
   .btn-secondary {
-    @apply bg-secondary-500 hover:bg-secondary-600 text-white font-semibold py-3 px-6 rounded-full transition-all duration-300;
+    @apply bg-ink-600 hover:bg-ink-700 text-cream font-semibold py-3 px-6 rounded-full transition-all duration-300;
+  }
+
+  /* Nút outline trên nền sáng */
+  .btn-outline {
+    @apply border border-ink-800 text-ink-800 hover:bg-ink-800 hover:text-cream font-semibold py-3 px-6 rounded-full transition-all duration-300;
   }
 
   /* Tiêu đề section */
   .section-title {
-    @apply text-3xl md:text-4xl font-serif font-bold text-gray-800 text-center mb-4;
+    @apply text-3xl md:text-4xl font-serif font-bold text-ink-800 text-center mb-4;
   }
 
   /* Mô tả section */
   .section-subtitle {
-    @apply text-gray-500 text-center mb-12 max-w-2xl mx-auto;
+    @apply text-ink-500 text-center mb-12 max-w-2xl mx-auto;
   }
 
   /* Card spa */
   .card-spa {
-    @apply bg-white rounded-2xl shadow-md hover:shadow-xl transition-all duration-300 overflow-hidden;
+    @apply bg-white rounded-2xl shadow-md hover:shadow-xl transition-all duration-300 overflow-hidden border border-ink-100;
   }
 }

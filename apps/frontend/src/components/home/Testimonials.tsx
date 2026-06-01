@@ -8,7 +8,7 @@ const testimonials = [
     avatar: 'H',
     rating: 5,
     content:
-      'Tôi rất hài lòng với dịch vụ tại Láng Spa. Nhân viên rất chuyên nghiệp và tận tình. Da mặt tôi cải thiện rõ rệt sau 3 buổi chăm sóc. Nhất định sẽ quay lại!',
+      'Tôi rất hài lòng với dịch vụ tại Láng Beauty & Spa. Nhân viên rất chuyên nghiệp và tận tình. Da mặt tôi cải thiện rõ rệt sau 3 buổi chăm sóc. Nhất định sẽ quay lại!',
     service: 'Chăm sóc da mặt',
   },
   {
@@ -26,7 +26,7 @@ const testimonials = [
     avatar: 'T',
     rating: 5,
     content:
-      'Đội ngũ kỹ thuật viên tại Láng Spa rất giỏi và nhiệt tình. Tôi đã triệt lông 5 buổi và kết quả rất tốt. Công nghệ laser không đau và an toàn.',
+      'Đội ngũ kỹ thuật viên tại Láng Beauty & Spa rất giỏi và nhiệt tình. Tôi đã triệt lông 5 buổi và kết quả rất tốt. Công nghệ laser không đau và an toàn.',
     service: 'Triệt lông',
   },
 ]
@@ -48,13 +48,13 @@ function StarRating({ rating }: { rating: number }) {
 // Section đánh giá khách hàng
 export default function Testimonials() {
   return (
-    <section className="py-20 bg-pink-50">
+    <section className="py-20 bg-cream">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Tiêu đề */}
         <div className="text-center mb-12">
           <h2 className="section-title">Khách hàng nói gì về chúng tôi</h2>
           <p className="section-subtitle">
-            Hàng nghìn khách hàng đã tin tưởng và hài lòng với dịch vụ tại Láng Spa
+            Hàng nghìn khách hàng đã tin tưởng và hài lòng với dịch vụ tại Láng Beauty & Spa
           </p>
         </div>
 

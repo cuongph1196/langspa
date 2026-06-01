@@ -1,6 +1,7 @@
 'use client'
 
 import Link from 'next/link'
+import Image from 'next/image'
 import { useForm } from 'react-hook-form'
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
@@ -50,13 +51,21 @@ export default function LoginPage() {
   }
 
   return (
-    <div className="min-h-screen bg-pink-50 flex items-center justify-center py-12 px-4">
+    <div className="min-h-screen bg-cream flex items-center justify-center py-12 px-4">
       <div className="w-full max-w-md">
         <div className="bg-white rounded-2xl shadow-lg p-8">
           {/* Logo */}
           <div className="text-center mb-8">
-            <h1 className="font-serif text-3xl font-bold text-primary-700">🌸 Láng Spa</h1>
-            <p className="text-gray-500 mt-2">Đăng nhập vào tài khoản của bạn</p>
+            <Image
+              src="/logo/logo-dark.png"
+              alt="Láng Beauty & Spa"
+              width={128}
+              height={128}
+              className="h-24 w-24 sm:h-28 sm:w-28 mx-auto mb-4 object-contain"
+              priority
+            />
+            <h1 className="font-serif text-2xl font-bold text-ink-800">Láng Beauty & Spa</h1>
+            <p className="text-gray-500 mt-2 text-sm">Đăng nhập vào tài khoản của bạn</p>
           </div>
 
           {/* Thông báo lỗi */}

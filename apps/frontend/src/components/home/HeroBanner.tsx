@@ -9,13 +9,13 @@ export default function HeroBanner() {
       <div className="absolute inset-0">
         <Image
           src="https://images.unsplash.com/photo-1600334089648-b0d9d3028eb2?w=1600&q=80"
-          alt="Láng Spa - Không gian thư giãn cao cấp"
+          alt="Láng Beauty & Spa - Không gian thư giãn cao cấp"
           fill
           className="object-cover"
           priority
         />
-        {/* Gradient overlay từ hồng đến hồng đậm */}
-        <div className="absolute inset-0 bg-gradient-to-r from-primary-700/85 via-primary-600/70 to-pink-400/50" />
+        {/* Gradient overlay đen sang xám trung tính */}
+        <div className="absolute inset-0 bg-gradient-to-r from-ink-900/85 via-ink-800/70 to-ink-500/40" />
       </div>
 
       {/* Nội dung banner */}
@@ -23,7 +23,7 @@ export default function HeroBanner() {
         <div className="max-w-2xl">
           {/* Badge */}
           <span className="inline-block bg-white/20 backdrop-blur-sm text-white text-sm font-medium px-4 py-1.5 rounded-full mb-6 border border-white/30">
-            ✨ Chào mừng đến Láng Spa
+            ✨ Chào mừng đến Láng Beauty & Spa
           </span>
 
           {/* Tiêu đề chính */}

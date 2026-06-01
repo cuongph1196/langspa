@@ -25,7 +25,7 @@ const membershipColors: Record<MembershipLevel, string> = {
   STANDARD: 'bg-gray-100 text-gray-700',
   SILVER: 'bg-gray-200 text-gray-800',
   GOLD: 'bg-yellow-100 text-yellow-700',
-  VIP: 'bg-pink-100 text-pink-700',
+  VIP: 'bg-ink-800 text-cream',
 }
 
 // Dữ liệu mẫu
@@ -43,7 +43,7 @@ const mockBookings = [
   {
     id: '1',
     serviceName: 'Chăm sóc da mặt',
-    branchName: 'Láng Spa - Đống Đa',
+    branchName: 'Láng Beauty & Spa - Đống Đa',
     bookingDate: '2024-12-20',
     timeSlot: '10:00',
     status: 'COMPLETED' as BookingStatus,
@@ -52,7 +52,7 @@ const mockBookings = [
   {
     id: '2',
     serviceName: 'Massage thư giãn',
-    branchName: 'Láng Spa - Cầu Giấy',
+    branchName: 'Láng Beauty & Spa - Cầu Giấy',
     bookingDate: '2025-01-15',
     timeSlot: '14:30',
     status: 'CONFIRMED' as BookingStatus,
@@ -68,7 +68,7 @@ export default function ProfilePage() {
     <div className="min-h-screen bg-gray-50 py-8">
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Header profile */}
-        <div className="bg-gradient-to-r from-primary-600 to-pink-500 rounded-2xl p-6 mb-6 text-white">
+        <div className="bg-gradient-to-r from-ink-800 to-ink-600 rounded-2xl p-6 mb-6 text-cream">
           <div className="flex items-center gap-4">
             <div className="w-16 h-16 bg-white/20 rounded-full flex items-center justify-center text-2xl font-bold">
               {mockUser.fullName.charAt(0)}
@@ -181,7 +181,7 @@ export default function ProfilePage() {
             </h2>
 
             {/* Điểm tích lũy */}
-            <div className="bg-gradient-to-r from-secondary-50 to-yellow-50 rounded-xl p-5 mb-6 border border-secondary-200">
+            <div className="bg-gradient-to-r from-ink-50 to-ink-100 rounded-xl p-5 mb-6 border border-ink-100">
               <div className="flex items-center justify-between">
                 <div>
                   <p className="text-gray-500 text-sm">Điểm tích lũy hiện tại</p>
