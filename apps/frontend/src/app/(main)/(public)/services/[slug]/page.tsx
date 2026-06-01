@@ -46,13 +46,14 @@ const relatedServices: Service[] = [
 ]
 
 interface ServiceDetailPageProps {
-  params: { slug: string }
+  params: Promise<{ slug: string }>
 }
 
 // Trang chi tiết dịch vụ
-export default function ServiceDetailPage({ params }: ServiceDetailPageProps) {
+export default async function ServiceDetailPage({ params }: ServiceDetailPageProps) {
+  const { slug } = await params
   // Lấy dữ liệu dịch vụ theo slug (trong thực tế sẽ fetch từ API)
-  const service = serviceData[params.slug] || serviceData['cham-soc-da-mat']
+  const service = serviceData[slug] || serviceData['cham-soc-da-mat']
 
   return (
     <div className="min-h-screen bg-gray-50">
