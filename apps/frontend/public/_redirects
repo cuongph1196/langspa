@@ -1,0 +1,3 @@
+# SPA fallback cho các route client-side (vd /admin/*) không có HTML tĩnh tương ứng
+/admin/*    /admin/index.html    200
+/profile/*  /profile/index.html  200

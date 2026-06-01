@@ -49,6 +49,15 @@ interface ServiceDetailPageProps {
   params: Promise<{ slug: string }>
 }
 
+// Static export: pre-render danh sách slug đã biết
+// Khi có CMS/API thật, fetch list slug ở đây
+export function generateStaticParams() {
+  return Object.keys(serviceData).map((slug) => ({ slug }))
+}
+
+// Slug không nằm trong list trên sẽ trả 404 thay vì SSR động
+export const dynamicParams = false
+
 // Trang chi tiết dịch vụ
 export default async function ServiceDetailPage({ params }: ServiceDetailPageProps) {
   const { slug } = await params
