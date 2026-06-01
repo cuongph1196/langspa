@@ -12,7 +12,7 @@ async function bootstrap() {
 
   // Cấu hình CORS cho frontend
   app.enableCors({
-    origin: ['http://localhost:3000'],
+    origin: ['http://localhost:3000',"https://1b652d37.langspa.pages.dev"],
     credentials: true,
   })
 
